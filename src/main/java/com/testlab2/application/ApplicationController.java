@@ -13,19 +13,19 @@ public class ApplicationController {
         this.cpService = cryptoService;
     }
 
-    @GetMapping("/hello")
+    @GetMapping("/api/hello")
     public String shouldGreetDefault(@RequestParam(
             name = "targetName",
             defaultValue = "Oscar") String name) {
         return String.format("Hello %s", name);
     }
 
-    @GetMapping("/status")
+    @GetMapping("/api/status")
     public String status() {
         return "Congratulations - you must be an admin since you can see the application's status information";
     }
 
-    @GetMapping("/getCryptoPrice/{cryptocurrency}")
+    @GetMapping("/api/getCryptoPrice/{cryptocurrency}")
     public String getPriceOfCoin(@PathVariable String cryptocurrency) {
         return "The Price of " + cryptocurrency + " is: " + cpService.getCoinPrice(cryptocurrency);
     }

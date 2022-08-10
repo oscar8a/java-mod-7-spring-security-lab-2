@@ -12,7 +12,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 
-import java.security.cert.Extension;
 
 @Configuration
 @EnableWebSecurity
@@ -20,18 +19,22 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
         httpSecurity.authorizeRequests()
-                .antMatchers("/status")
-                .hasAuthority("admin")
-                .antMatchers("/hello")
+                .antMatchers("/api/status")
                 .hasAuthority("admin");
 
         httpSecurity.authorizeRequests()
-                .anyRequest()
+                .antMatchers("/api/**")
                 .authenticated()
                 .and()
                 .formLogin()
                 .and()
                 .logout();
+
+        httpSecurity.authorizeRequests()
+                .anyRequest()
+                .authenticated()
+                .and()
+                .oauth2Login();
 
         return httpSecurity.build();
     }

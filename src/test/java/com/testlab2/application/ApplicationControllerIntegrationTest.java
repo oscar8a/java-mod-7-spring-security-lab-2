@@ -10,6 +10,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.math.BigDecimal;
+
 import static org.hamcrest.Matchers.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -30,7 +32,7 @@ class ApplicationControllerIntegrationTest {
     @WithMockUser(username = "fakeuser", authorities = "admin")
     @Test
     void shouldGreetDefault() throws Exception {
-        mockMvc.perform(get("/hello"))
+        mockMvc.perform(get("/api/hello"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string(equalTo("Hello Oscar")));
@@ -40,7 +42,7 @@ class ApplicationControllerIntegrationTest {
     @Test
     void shouldGreetByName() throws Exception {
         String greetingName = "Ferguson";
-        mockMvc.perform(get("/hello").param("targetName", greetingName))
+        mockMvc.perform(get("/api/hello").param("targetName", greetingName))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string(equalTo("Hello Ferguson")));
@@ -50,7 +52,7 @@ class ApplicationControllerIntegrationTest {
     @ParameterizedTest
     @ValueSource(strings = {"bitcoin", "ethereum", "cardano"})
     void getCoinPrice(String crypto) throws Exception {
-        mockMvc.perform(get("/getCryptoPrice/" + crypto))
+        mockMvc.perform(get("/api/getCryptoPrice/" + crypto))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string(containsString("The Price of " + crypto + " is: " + cpservice.getCoinPrice(crypto))));
